@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/social-media-erinberg24/static/css/main.619d2d2f.chunk.css",
+    "main.js": "/social-media-erinberg24/static/js/main.cb8f3c4f.chunk.js",
+    "main.js.map": "/social-media-erinberg24/static/js/main.cb8f3c4f.chunk.js.map",
+    "runtime-main.js": "/social-media-erinberg24/static/js/runtime-main.72d1b2dc.js",
+    "runtime-main.js.map": "/social-media-erinberg24/static/js/runtime-main.72d1b2dc.js.map",
+    "static/js/2.d9eeb445.chunk.js": "/social-media-erinberg24/static/js/2.d9eeb445.chunk.js",
+    "static/js/2.d9eeb445.chunk.js.map": "/social-media-erinberg24/static/js/2.d9eeb445.chunk.js.map",
+    "index.html": "/social-media-erinberg24/index.html",
+    "precache-manifest.532cc9def6b634021d8434a19f800678.js": "/social-media-erinberg24/precache-manifest.532cc9def6b634021d8434a19f800678.js",
+    "service-worker.js": "/social-media-erinberg24/service-worker.js",
+    "static/css/main.619d2d2f.chunk.css.map": "/social-media-erinberg24/static/css/main.619d2d2f.chunk.css.map",
+    "static/js/2.d9eeb445.chunk.js.LICENSE.txt": "/social-media-erinberg24/static/js/2.d9eeb445.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.72d1b2dc.js",
+    "static/js/2.d9eeb445.chunk.js",
+    "static/css/main.619d2d2f.chunk.css",
+    "static/js/main.cb8f3c4f.chunk.js"
+  ]
+}
