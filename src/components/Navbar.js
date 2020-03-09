@@ -1,6 +1,6 @@
 import React from 'react';
 import css from './Navbar.module.css';
-import publicUrl from '/Users/courtneypeterson/Desktop/social-media-erinberg24/src/utils/publicUrl.js';
+import publicUrl from '/Users/erinberg/Desktop/Web Apps/social-media-erinberg24/social-media-erinberg24/src/utils/publicUrl.js';
 
 function Navbar(props) {
     function handleNavChange(page){
