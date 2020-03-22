@@ -1,21 +1,23 @@
 import React from 'react';
 import css from './Profile.module.css'; 
 import PostThumbnail from './PostThumbnail.js';
+import publicUrl from 'utils/publicUrl';
+
 
 function Profile(props) {
   const {store} = props;
 
+  const userId = store.currentUserId;
   const user = store.users.find(user=>user.id===store.currentUserId);
-  const userId = props.store.currentUserId;
-  const posts = props.store.posts.filter(post=>(post.userId===userId));
-  const followers = props.store.followers.filter(follower=>(follower.userId===userId))
-  const following = props.store.followers.filter(follower=>(follower.followerId===userId))
+  const posts = store.posts.filter(post=>(post.userId===userId));
+  const followers = store.followers.filter(follower=>(follower.userId===userId))
+  const following = store.followers.filter(follower=>(follower.followerId===userId))
 
   return (
     <article className={css.profile}>
         <header className={css.header}>
           <div className={css.user}>
-            <img src={user.photo} alt='User Profile'/> 
+            <img src={publicUrl(user.photo)} alt='Profile'/> 
             <span >{user.id} </span>
           </div>
         </header>
@@ -56,7 +58,7 @@ function Profile(props) {
             {posts.sort((a,b)=>new Date(b.datetime) - new Date(a.datetime))
             .map(post=>
               <PostThumbnail
-                photo={post.photo}
+                key={post.id} post={post}
               />)}
         </section>
     </article>

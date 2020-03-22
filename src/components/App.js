@@ -25,9 +25,13 @@ function App() {
       case 'activity':
         return <Activity/>;
       case 'profile':
-        return <Profile/>;
+        return <Profile store={store}/>;
       default:
-        return <Home/>;
+        return <Home store={store}
+        onLike={addLike} 
+        onUnlike={removeLike}
+        onComment={addComment} 
+         />;
     }
   }
 

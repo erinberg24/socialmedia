@@ -1,6 +1,7 @@
 import React from 'react';
 import css from './PostThumbnail.module.css';
 import publicUrl from 'utils/publicUrl';
+
 function PostThumbnail(props) {
   return (
     <div className={css.square}>
@@ -13,3 +14,4 @@ function PostThumbnail(props) {
 }
 
 export default PostThumbnail;
+
