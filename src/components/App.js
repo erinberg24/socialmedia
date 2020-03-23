@@ -9,6 +9,11 @@ import Activity from './Activity';
 import Explore from './Explore';
 import initialStore from 'utils/initialStore';
 import uniqueId from 'utils/uniqueId';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
 
 function App() {
   const [page, setPage] = useState('home');
@@ -99,16 +104,67 @@ function App() {
 		// TODO:
     // 1. Call setPage to come back to the home page (we will use Router to improve this)
     setPage('home');
-	}
+  }
+  
+  function addFollower(userId, followerId){
+    const follower = {
+      userId: store.userId, 
+      followerId: store.followerId
+    };
+  
+    setStore({
+      ...store,
+      followers: store.followers.concat(follower)
+    });
+  }
+
+  function removeFollower(userId, followerId){
+      setStore({
+      ...store,
+      followers: store.followers.filter(follower=>!(follower.userId===store.userId && follower.followerId===followerId))
+    });
+  }
 
   return (
-    <div className={css.container}>
-	    <Header/>
+    <Router basename={process.env.PUBLIC_URL}>
+      <div className={css.container}>
+      <Header/>
       <main className={css.content}>
-        {renderMain(page)}        
+      <Switch>
+        <Route path="/profile/:userId?">
+          <Profile store={store} onFollow={addFollower} onUnfollow={removeFollower}/>
+        </Route>
+        <Route path="/newpost">
+          <NewPost store={store} addPost={addPost} cancelPost={cancelPost} />;
+        </Route>
+        <Route path="/explore">
+          <Explore/>
+        </Route>
+        <Route path='/activity'>
+          <Activity/>
+        </Route>
+        <Route path="/:postId?">
+          <Home store={store} onLike={addLike} onUnlike={removeLike} onComment={addComment}/>
+        </Route>
+      </Switch>
       </main>
       <Navbar onNavChange={setPage}/>
-    </div>
+      </div>
+    </Router>
+
+
+
+
+
+
+	  /*    
+        <main className={css.content}>
+          {renderMain(page)}        
+        </main>
+        <Navbar onNavChange={setPage}/>
+      </div>
+    </Router>
+    */
   );
 }
 

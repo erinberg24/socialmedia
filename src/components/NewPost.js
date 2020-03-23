@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import css from './NewPost.module.css';
 import FileLoader from './FileLoader.js';
+import {
+  useHistory
+} from "react-router-dom";
 
 function NewPost(props) {
   const [dragging, setDragging] = useState(false); // to show a dragging effect
   const [desc, setDesc] = useState('');
   const [photo, setPhoto] = useState(null);
   const [error, setError] = useState(''); // to show an error message
+  const history = useHistory();
 
   function handleFileDragEnter(e){
     setDragging(true);
@@ -26,7 +30,6 @@ function NewPost(props) {
       if (file.type.match(/image.*/)){
 				let reader = new FileReader();			
 				reader.onloadend = (e) => {
-          // TODO: call setPhoto with e.target.result (this is a Base64 image string)
           setPhoto(e.target.result);
 		
 				};
@@ -36,24 +39,24 @@ function NewPost(props) {
     setDragging(false);    
   }
   function handleDescChange(e){
-		setDesc(e.target.value)
+		setDesc(e.target.desc)
   }
   function handleSubmit(e){
-		// TODO:
-		// 1. Prevent default behavior
-		// 2. Show error msg if failed and exit
-		// 3. Call the storage update function passed from the parent
-    // 3. Clear error msg
     e.preventDefault();
-    if(error){
+    if(photo===null){
+      setError('You need to add a photo!');
       return;
     }
-    props.addPost(photo, desc);
     setError('');
+
+    props.onPost(photo, desc);
+    history.push('/');
   }
+
   function handleCancel(){
     // TODO: Notify the parent about the cancellation
-
+    history.goBack();
+    //props.onCancel();
   }
   return (
     <div>
@@ -73,12 +76,10 @@ function NewPost(props) {
         </div>
         
         <div className={css.desc} >
-          <form className={css.desc} onSubmit={handleSubmit}>
-                <input type="text" placeholder="Add a description…" value={desc} onChange={handleDescChange}/>
-          </form>}
+            <textarea placeholder="Add a description…" rows="2" value={desc} onChange={handleDescChange}/>
         </div>
         <div className={css.error}>
-					{/* TODO: show error message */}
+					{error}
         </div>
         <div className={css.actions}>
           <button onClick={handleCancel}>Cancel</button>
