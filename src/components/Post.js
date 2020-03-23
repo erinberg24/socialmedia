@@ -56,9 +56,7 @@ function Post(props) {
                 </div>
                 <div className={css.comments}>
                     <div>
-                        <Link to={'/profile/' + props.user.id + '?'}>
-                            <span>{props.post.userId}</span>
-                        </Link>
+                        <span><Link to={'/profile/' + props.post.userId + '?'}>{props.post.userId}</Link></span>
                         <span>{props.post.desc}</span>
                     </div>      
                     {props.comments.map((comment,i)=>

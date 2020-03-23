@@ -8,30 +8,42 @@ import { useParams } from 'react-router-dom';
 
 function Profile(props) {
   const {store} = props;
+  let {userId} = useParams();
   
-
-  /*let {userId} = useParams();
-  {
-    
-  const user = userId ?
-  `store.users.find(user=>user.id===userId)` : `store.users.find(user=>user.id===store.currentUserId)`;
+  if (!userId) {
+    userId = store.currentUserId;
   }
-  */
 
-
-  const userId = store.currentUserId;
-  const user = store.users.find(user=>user.id===store.currentUserId)
+  const user = store.users.find(user=>user.id===userId)
   const posts = store.posts.filter(post=>(post.userId===userId));
   const followers = store.followers.filter(follower=>(follower.userId===userId))
   const following = store.followers.filter(follower=>(follower.followerId===userId))
+
+  function handleFollow(){
+    props.onFollow(userId, store.currentUserId);
+  }
+
+  function handleUnfollow(){
+    props.onUnfollow(userId, store.currentUserId)
+  }
 
   return (
     <article className={css.profile}>
         <header className={css.header}>
           <div className={css.user}>
             <img src={publicUrl(user.photo)} alt='Profile'/> 
+          </div>
+          <div className={css.id}>
             <span >{user.id}</span>
-            <button className={css.followBtn}>Follow</button>
+            {userId!==store.currentUserId &&
+              <div>
+                {followers.some(follower=>follower.followerId===store.currentUserId)?
+                <button className={css.unfollowBtn} onClick={handleUnfollow}>Unfollow</button>
+                :
+                <button className = {css.followBtn} onClick={handleFollow}>Follow</button>
+              }
+              </div>
+            }
           </div>
         </header>
         <section className={css.description}>

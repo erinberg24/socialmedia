@@ -107,21 +107,16 @@ function App() {
   }
   
   function addFollower(userId, followerId){
-    const follower = {
-      userId: store.userId, 
-      followerId: store.followerId
-    };
-  
     setStore({
       ...store,
-      followers: store.followers.concat(follower)
+      followers: store.followers.concat({userId, followerId})
     });
   }
 
   function removeFollower(userId, followerId){
       setStore({
       ...store,
-      followers: store.followers.filter(follower=>!(follower.userId===store.userId && follower.followerId===followerId))
+      followers: store.followers.filter(follower=>follower.userId!==userId && follower.followerId!==followerId)
     });
   }
 
@@ -148,7 +143,7 @@ function App() {
         </Route>
       </Switch>
       </main>
-      <Navbar onNavChange={setPage}/>
+      <Navbar/>
       </div>
     </Router>
 
