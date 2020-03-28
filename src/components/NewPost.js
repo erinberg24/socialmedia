@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import css from './NewPost.module.css';
 import FileLoader from './FileLoader.js';
 import {
   useHistory
 } from "react-router-dom";
+import { StoreContext } from 'contexts/StoreContext';
 
 function NewPost(props) {
   const [dragging, setDragging] = useState(false); // to show a dragging effect
@@ -11,6 +12,9 @@ function NewPost(props) {
   const [photo, setPhoto] = useState(null);
   const [error, setError] = useState(''); // to show an error message
   const history = useHistory();
+  let {
+    addPost
+  } = useContext(StoreContext);
 
   function handleFileDragEnter(e){
     setDragging(true);
@@ -49,7 +53,7 @@ function NewPost(props) {
     }
     setError('');
 
-    props.onPost(photo, desc);
+    addPost(photo, desc);
     history.push('/');
   }
 

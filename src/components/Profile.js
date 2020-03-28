@@ -1,30 +1,35 @@
-import React from 'react';
+import React, { useContext} from 'react';
 import css from './Profile.module.css'; 
 import PostThumbnail from './PostThumbnail.js';
 import publicUrl from 'utils/publicUrl';
 import {Link} from "react-router-dom";
 import { useParams } from 'react-router-dom';
+import { StoreContext } from 'contexts/StoreContext';
 
 
 function Profile(props) {
-  const {store} = props;
+  //const {store} = props;
   let {userId} = useParams();
+  let {
+    posts, users, followers, currentUserId, 
+    addFollower, removeFollower
+  } = useContext(StoreContext);
   
   if (!userId) {
-    userId = store.currentUserId;
+    userId = currentUserId;
   }
 
-  const user = store.users.find(user=>user.id===userId)
-  const posts = store.posts.filter(post=>(post.userId===userId));
-  const followers = store.followers.filter(follower=>(follower.userId===userId))
-  const following = store.followers.filter(follower=>(follower.followerId===userId))
+  const user = users.find(user=>user.id===userId)
+  posts = posts.filter(post=>(post.userId===userId));
+  followers = followers.filter(follower=>(follower.userId===userId))
+  const following = followers.filter(follower=>(follower.followerId===userId))
 
   function handleFollow(){
-    props.onFollow(userId, store.currentUserId);
+    addFollower(userId, currentUserId);
   }
 
   function handleUnfollow(){
-    props.onUnfollow(userId, store.currentUserId)
+    removeFollower(userId, currentUserId)
   }
 
   return (
@@ -35,9 +40,9 @@ function Profile(props) {
           </div>
           <div className={css.id}>
             <span >{user.id}</span>
-            {userId!==store.currentUserId &&
+            {userId!==currentUserId &&
               <div>
-                {followers.some(follower=>follower.followerId===store.currentUserId)?
+                {followers.some(follower=>follower.followerId===currentUserId)?
                 <button className={css.unfollowBtn} onClick={handleUnfollow}>Unfollow</button>
                 :
                 <button className = {css.followBtn} onClick={handleFollow}>Follow</button>
