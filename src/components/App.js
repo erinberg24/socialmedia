@@ -7,12 +7,15 @@ import Profile from './Profile';
 import NewPost from './NewPost';
 import Activity from './Activity';
 import Explore from './Explore';
+import Login from './Login';
+import Signup from './Signup';
+import StoreContextProvider from 'contexts/StoreContext';
 import {
   BrowserRouter as Router,
   Switch,
   Route
 } from "react-router-dom";
-import StoreContextProvider from 'contexts/StoreContext';
+
 
 function App() {
   //const [page, setPage] = useState('home');
@@ -59,6 +62,12 @@ function App() {
           </Route>
           <Route path="/:postId?">
             <Home />
+          </Route>
+          <Route path="/login">
+	          <Login />
+          </Route>
+          <Route path="/signup">
+            <Signup />
           </Route>
         </Switch>
         </main>

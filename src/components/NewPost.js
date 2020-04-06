@@ -5,6 +5,7 @@ import {
   useHistory
 } from "react-router-dom";
 import { StoreContext } from 'contexts/StoreContext';
+import { Redirect } from "react-router-dom";
 
 function NewPost(props) {
   const [dragging, setDragging] = useState(false); // to show a dragging effect
@@ -64,7 +65,6 @@ function NewPost(props) {
   }
   return (
     <div>
-        
         <div className={css.photo}>
           {!photo?  <div className={css.message}>Drop your image</div>:
                     <img src={photo} alt="New Post"/>}

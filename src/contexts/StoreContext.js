@@ -1,15 +1,18 @@
 import React, {createContext, useState, useEffect} from 'react';
 import uniqueId from 'utils/uniqueId.js';
-import initialStore from 'utils/initialStore.js';
-import * as firebase from 'firebase';
-import 'firebase/database'
+//import initialStore from 'utils/initialStore.js';
+import * as firebase from 'firebase'; 
+import 'firebase/auth';
+import 'firebase/database';
+import { useHistory } from 'react-router-dom';
+
 
 // export the context so that other components can import
 export const StoreContext = createContext(); 
 
 function StoreContextProvider(props){
 
-    // //const [store, setStore] = useState(initialStore);
+    // const [store, setStore] = useState(initialStore);
 
     // const [store, setStore] = useState(()=>{
     //     return JSON.parse(window.localStorage.getItem('store')) || initialStore;
@@ -19,24 +22,63 @@ function StoreContextProvider(props){
     //     window.localStorage.setItem('store', JSON.stringify(store));
     // }, [store]);
 
-    const firebaseConfig = {
-
-    };
-    
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    const [currentUserId, setCurrentUserId] = useState(null); // or 'erin'
+    const [currentUserId, setCurrentUserId] = useState('erin'); // or 'erin'
     const [users, setUsers] = useState([]);
     const [posts, setPosts] = useState([]);
     const [likes, setLikes] = useState([]);
     const [followers, setFollowers] = useState([]);
     const [comments, setComments] = useState([]);
+    const history = useHistory();
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDvGwbJUelrbLAcoWg8B0tWCZC6gyqO7KU",
+      authDomain: "social-media-10e37.firebaseapp.com",
+      databaseURL: "https://social-media-10e37.firebaseio.com",
+      projectId: "social-media-10e37",
+      storageBucket: "social-media-10e37.appspot.com",
+      messagingSenderId: "947534729063",
+      appId: "1:947534729063:web:4bc115671e2a58edeaa9c2"
+    };
+    
+    // Initialize Firebase
+    //if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+   // }
+    const db = firebase.firestore();
+
+    function login(email, password){
+      firebase.auth.signInWithEmailAndPassword(email,password).then((response)=>{
+        db.collection('users').where('email','==', response.user.email).get().then(snapshot=>{
+          setCurrentUserId(snapshot.docs[0].data().id);
+        })
+      }).catch(error=>{
+        setCurrentUserId(null);
+      })
+      history.push('/');
+    }
+
+    function signup(email, password, bio, id, name, photo){
+      const user = {
+        email, id, name, bio, photo
+      };
+      firebase.auth.createUserWithEmailAndPassword(email, password).then(()=>{
+        // add a user to the firestore database
+        db.collection('users').add(user);
+        
+        // add a user to the app state
+        setUsers(users.concat(user));
+        
+        // set the user as a current user 
+        setCurrentUserId(id);
+        
+        // route to home
+        history.push('/');
+      })
+    }
 
     function addLike(postId){
         const like = {
-            userId: store.currentUserId, 
+            userId: currentUserId, 
             postId,
             datetime: new Date().toISOString()
         };
@@ -65,7 +107,7 @@ function StoreContextProvider(props){
     
       function addComment(postId, text){
         const comment = {
-          userId: store.currentUserId, 
+          userId: currentUserId, 
           postId,
           text,
           datetime: new Date().toISOString()
@@ -88,7 +130,7 @@ function StoreContextProvider(props){
         // 3. Call setPage to come back to the home page
         const post = {
           id: uniqueId('post'),
-          userId: store.currentUserId,
+          userId: currentUserId,
           photo,
           desc,
           datetime: new Date().toISOString()
@@ -110,9 +152,9 @@ function StoreContextProvider(props){
         //   ...store,
         //   followers: store.followers.concat({userId, followerId})
         // });
-        setFollowers(followers.concat(follower));
+        setFollowers(followers.concat({userId, followerId}));
         //Firestore update
-        db.collection('followers').add(follower);
+        db.collection('followers').add({userId, followerId});
 
       }
     
@@ -122,7 +164,7 @@ function StoreContextProvider(props){
         //   followers: store.followers.filter(follower=>follower.userId!==userId && follower.followerId!==followerId)
         // });
 
-        setFollowers(followers.filter(follower => !(follower.userId === userId && folower.followerId === followerId)));
+        setFollowers(followers.filter(follower => !(follower.userId === userId && follower.followerId === followerId)));
 
         db.collection('followers').where('userId', '==', userId).where('followerId', '==', followerId).get().then(snapshot=>snapshot.forEach(doc=>doc.ref.delete()));
         
@@ -153,7 +195,7 @@ function StoreContextProvider(props){
   }, []);
 
 	return (
-        <StoreContext.Provider value = {{...store, addComment, addLike, removeLike, addPost, addFollower, removeFollower}}>
+        <StoreContext.Provider value = {{login, addComment, addLike, removeLike, addPost, addFollower, removeFollower}}>
             {props.children}
         </StoreContext.Provider>
     )
