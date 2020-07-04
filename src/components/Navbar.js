@@ -1,6 +1,6 @@
 import React from 'react';
 import css from './Navbar.module.css';
-import publicUrl from '/Users/erinberg/Downloads/socialmedia-a88d2587b9c3c1bbc9051bbf647f42bba7417f19/src/utils/publicUrl.js';
+import publicUrl from '/Users/erinberg/socialmedia/socialmedia-1/src/utils/publicUrl.js';
 import {
     Link
   } from "react-router-dom";
