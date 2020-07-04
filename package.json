@@ -1,8 +1,8 @@
 {
-  "name": "social-media-erinberg24",
+  "name": "socialmedia",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://bcwebcourse.github.io/social-media-erinberg24",
+  "homepage": "https://erinberg24.github.io/socialmedia/",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.1",
