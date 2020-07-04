@@ -5,7 +5,6 @@ import publicUrl from 'utils/publicUrl';
 import {Link} from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import { StoreContext } from 'contexts/StoreContext';
-import { Redirect } from "react-router-dom";
 
 
 function Profile(props) {

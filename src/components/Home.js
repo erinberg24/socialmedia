@@ -30,24 +30,12 @@ function Home(props) {
     }
   }
 
-  // const filtered = posts.filter(post=>post.id===postId);
+  const filtered = posts.filter(post=>post.id===postId);
 
 	return (
 		<div>
-      {posts.sort((a,b)=>new Date(b.datetime) - new Date(a.datetime))
-      .filter(post=>postId?(post.id===postId):true)
-      .map(post=><Post
-        key={post.id}
-        user={findUser(post)}
-        post={post}
-        comments={findComments(post)}
-        likes={findLikes(post)}
-        onComment={addComment} 
-        onLike={addLike} 
-        onUnlike={removeLike} 
-      />)}
       
-      {/* { filtered.length > 0 ?
+      { filtered.length > 0 ?
           filtered.map(post=>
 				  <Post
 	        key={post.id}
@@ -74,7 +62,7 @@ function Home(props) {
             onComment={addComment}
           />
           )
-      } */}
+      }
     </div>
 	);
 }
